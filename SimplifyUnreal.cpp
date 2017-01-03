@@ -82,7 +82,12 @@ TArray<FVector2D> USimplifyUnreal::Simplify(TArray<FVector2D> points, float tole
 
 	float sqTolerance = tolerance * tolerance;
 
-	TArray<FVector2D> simplifiedPoints = simplifyDouglasPeucker(points, sqTolerance);
+	if (highestQuality) {
+		TArray<FVector2D> simplifiedPoints = simplifyRadialDist(points, sqTolerance);
+		return simplifyDouglasPeucker(simplifiedPoints, sqTolerance);
+	}
+	else {
+		return simplifyDouglasPeucker(points, sqTolerance);
+	}
 
-	return simplifiedPoints;
 }
